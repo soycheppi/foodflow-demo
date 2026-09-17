@@ -1,0 +1,9 @@
+# FoodFlow Core — White-Label Restaurant Ordering Documentation
+
+> FoodFlow Core is a high-performance, white-label food ordering platform and WhatsApp checkout starter kit built with React 19, TypeScript 5.9, Vite 6, and Tailwind CSS v4.
+
+## Core Documentation & Resources
+- [Online Store & Interactive Menu](https://foodflow-core.pages.dev/)
+- [Menu Categories & Catalog](https://foodflow-core.pages.dev/categories)
+- [Admin Backoffice Panel](https://foodflow-core.pages.dev/admin/login)
+- [Repository & Source](https://github.com/soycheppi/foodflow-core)
