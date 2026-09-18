@@ -1,10 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import * as UserService from '@/adapters/users';
+import { UserProfile } from '@/core/types/auth';
 
-export const useUserProfile = (uid: string) => {
+const GUEST_PROFILE: UserProfile = {
+  displayName: 'Cliente Invitado',
+  email: 'invitado@foodflow.local',
+  totalOrders: 1,
+  rewardCycle: 1,
+  createdAt: new Date(),
+};
+
+export const useUserProfile = (_uid: string) => {
   return useQuery({
-    queryKey: ['user-profile', uid],
-    queryFn: () => UserService.getUserProfile(uid),
-    enabled: Boolean(uid),
+    queryKey: ['user-profile', _uid],
+    queryFn: async () => GUEST_PROFILE,
+    enabled: Boolean(_uid),
   });
 };

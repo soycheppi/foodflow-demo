@@ -90,12 +90,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'firebase-vendor': [
-            'firebase/app',
-            'firebase/auth',
-            'firebase/firestore/lite',
-            'firebase/storage',
-          ],
+          
           'tanstack-vendor': [
             '@tanstack/react-query',
             '@tanstack/query-sync-storage-persister',
@@ -136,13 +131,7 @@ export default defineConfig({
 
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: [
-      'firebase/app',
-      'firebase/auth',
-      'firebase/firestore/lite',
-      'firebase/storage',
-      'firebase/app-check',
-    ],
+    exclude: [],
   },
 
   test: {
