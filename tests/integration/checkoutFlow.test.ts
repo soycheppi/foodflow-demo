@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useCartStore } from '@/modules/cart/context/CartProvider';
-import { calculateOrderSummary } from '@/core/logic/pricing';
+import { useCartStore } from '@/features/cart/useCartStore';
+import { calculateOrderSummary, formatCurrency } from '@/core/logic/pricing';
 import { buildWhatsAppOrderMessage, createWhatsAppUrl } from '@/core/logic/whatsapp';
 import { StoreSettings } from '@/core/types/settings';
 import { Product } from '@/core/types/catalog';
-import { CustomerOrderInfo } from '@/core/types/order';
+import { CustomerOrderInfo, CartItem } from '@/core/types/order';
 
 describe('Order & WhatsApp Checkout Flow (Integration)', () => {
   beforeEach(() => {
@@ -81,7 +81,7 @@ describe('Order & WhatsApp Checkout Flow (Integration)', () => {
       paymentMethod: 'cash',
     };
 
-    const orderPayload = currentCart.articulos.map((item) => ({
+    const orderPayload = currentCart.articulos.map((item: CartItem) => ({
       id: item.id,
       name: item.nombre,
       price: item.precio,
@@ -101,7 +101,7 @@ describe('Order & WhatsApp Checkout Flow (Integration)', () => {
     expect(message).toContain('• Smash Bacon Double x2');
     expect(message).toContain('• Craft IPA Beer x1');
     expect(message).toContain('Av. Libertador 4500, 4B');
-    expect(message).toContain('5750.00');
+    expect(message).toContain(formatCurrency(5750));
     expect(message).toContain('validate-points?uid=user-vip-123');
 
     const whatsappUrl = createWhatsAppUrl('+54 9 11 9876-5432', message);

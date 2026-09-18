@@ -1,4 +1,4 @@
-﻿import js from '@eslint/js';
+import js from '@eslint/js';
 import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -89,6 +89,18 @@ export default [
         },
       ],
       'react/prop-types': 'off',
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'firebase/firestore',
+              message:
+                'Forbidden: Use "firebase/firestore/lite" instead to maintain zero-egress cost and a lightweight bundle (<120 kB).',
+            },
+          ],
+        },
+      ],
     },
   },
 ];

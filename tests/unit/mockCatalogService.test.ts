@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { mockCatalogService } from '@/adapters/mockCatalogService';
+import { mockCatalogService } from '@/adapters/mock/mockCatalogService';
 
 describe('MockCatalogService (Autonomous Zero-Backend Engine)', () => {
   beforeEach(() => {

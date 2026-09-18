@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { buildWhatsAppOrderMessage, createWhatsAppUrl } from '@/core/logic/whatsapp';
+import { formatCurrency } from '@/core/logic/pricing';
 
 describe('WhatsApp Logic Engine', () => {
   it('creates clean wa.me url with encoded message and stripped phone symbols', () => {
@@ -30,7 +31,7 @@ describe('WhatsApp Logic Engine', () => {
     expect(msg).toContain('• Burger x2');
     expect(msg).toContain('• Soda x1');
     expect(msg).toContain('Main Ave 123');
-    expect(msg).toContain('2800.00');
+    expect(msg).toContain(formatCurrency(2800));
   });
 
   it('formats takeaway order with bank transfer payment correctly without address line', () => {

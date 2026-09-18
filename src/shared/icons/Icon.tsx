@@ -5,11 +5,6 @@ export interface IconProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-/**
- * Base Icon component for consistent SVG behavior.
- * Most icons use 24x24 viewBox or similar. Individual icons
- * should override viewBox if necessary.
- */
 export const Icon: React.FC<IconProps & { children: React.ReactNode; viewBox?: string }> = ({
   size = 20,
   className = '',

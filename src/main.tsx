@@ -1,17 +1,17 @@
-// src/main.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import './tailwind.css';
 
-// --- EARLY APP CHECK INJECTION ---
 if (typeof window !== 'undefined' && import.meta.env.VITE_APP_CHECK_DEBUG_TOKEN) {
   window.FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_APP_CHECK_DEBUG_TOKEN;
 }
-// ---------------------------------
 
 import App from '@/App';
-import { ThemeProvider } from '@/context/ThemeProvider';
+import { ThemeProvider } from '@/app/providers/ThemeProvider';
+import { initTelemetry } from '@/core/telemetry/vitals';
+
+initTelemetry();
 import { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';

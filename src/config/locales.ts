@@ -1,8 +1,3 @@
-/**
- * FoodFlow Core - Centralized Locale Dictionary
- * Strongly typed, readonly translations dictionary for white-label distribution.
- */
-
 const locales = {
   common: {
     loading: 'Loading...',
@@ -323,5 +318,3 @@ const locales = {
 } as const;
 
 export const t = locales;
-
-export type LocaleTranslations = typeof locales;

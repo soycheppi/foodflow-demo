@@ -1,28 +1,20 @@
 export interface Category {
-  id: string;
-  nombre: string;
-  orden: number;
-  imagenUrl?: string;
+  readonly id: string;
+  readonly nombre: string;
+  readonly orden: number;
+  readonly imagenUrl?: string;
 }
 
 export interface Product {
-  id: string;
-  nombre: string;
-  descripcion?: string;
-  precio: number;
-  stock: number;
-  imagenUrl?: string;
-  categoria: string;
-  orden: number;
-  creadoEl?: Date | string | null;
-  actualizadoEl?: Date | string | null;
-  permiteReserva?: boolean;
+  readonly id: string;
+  readonly nombre: string;
+  readonly descripcion?: string;
+  readonly precio: number;
+  readonly stock: number;
+  readonly imagenUrl?: string;
+  readonly categoria: string;
+  readonly orden: number;
+  readonly creadoEl?: Date | string | null;
+  readonly actualizadoEl?: Date | string | null;
+  readonly permiteReserva?: boolean;
 }
-
-/** @deprecated Use Category instead */
-export type AlfreCategory = Category;
-
-/** @deprecated Use Product instead */
-export type AlfreProduct = Product;
-
-export type { CartItem } from '@/core/types/order';

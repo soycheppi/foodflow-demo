@@ -1,9 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import ProductCard from '@/modules/catalog/components/ProductCard';
-import { Product, CartItem } from '@/core/types/catalog';
-import { restaurantConfig } from '@/config/restaurant.config';
+import ProductCard from '@/entities/product/ProductCard';
+import { Product } from '@/core/types/catalog';
+import type { CartItem } from '@/core/types/order';
+import { formatCurrency } from '@/core/logic/pricing';
 
 const mockProduct: Product = {
   id: 'prod-truffle-burger',
@@ -28,7 +29,7 @@ describe('ProductCard Component', () => {
 
     expect(screen.getByText('Truffle Bacon Deluxe')).toBeInTheDocument();
     expect(screen.getByText('Fresh artisan burger with black truffle mayo')).toBeInTheDocument();
-    expect(screen.getByText(`${restaurantConfig.business.currencySymbol}3200.00`)).toBeInTheDocument();
+    expect(screen.getByText(formatCurrency(3200))).toBeInTheDocument();
   });
 
   it('triggers onAddToCart callback when add button is clicked on in-stock product', () => {

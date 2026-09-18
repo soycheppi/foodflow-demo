@@ -5,16 +5,16 @@ interface SpinnerProps {
   variant?: 'fullscreen' | 'inline';
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ label = 'Cargando…', variant = 'fullscreen' }) => {
+const Spinner: React.FC<SpinnerProps> = ({ label = 'Cargando…', variant = 'inline' }) => {
   if (variant === 'inline') {
     return (
       <div
-        className="w-full py-16 flex flex-col justify-center items-center gap-4"
+        className="w-full min-h-[40vh] py-16 flex flex-col justify-center items-center gap-4"
         role="status"
         aria-live="polite"
         aria-label={label}
       >
-        <div className="animate-spin w-8 h-8 border-4 border-gray-200 dark:border-white/10 border-t-brand-red rounded-full" />
+        <div className="animate-spin w-9 h-9 border-3 border-gray-200 dark:border-white/10 border-t-brand-red rounded-full" />
         <span className="text-gray-400 dark:text-gray-500 text-xs font-bold uppercase tracking-widest">{label}</span>
       </div>
     );

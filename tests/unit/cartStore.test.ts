@@ -1,7 +1,8 @@
 import React from 'react';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, renderHook } from '@testing-library/react';
-import { useCartStore, useCart, CartProvider } from '@/modules/cart/context/CartProvider';
+import { useCartStore, useCart } from '@/features/cart/useCartStore';
+import { CartProvider } from '@/features/cart/CartProvider';
 import { Product } from '@/core/types/catalog';
 
 describe('useCartStore (Zustand State Engine)', () => {

@@ -19,8 +19,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
+      "@/app/*": ["src/app/*"],
       "@/core/*": ["src/core/*"],
-      "@/modules/*": ["src/modules/*"],
+      "@/entities/*": ["src/entities/*"],
+      "@/features/*": ["src/features/*"],
+      "@/widgets/*": ["src/widgets/*"],
+      "@/pages/*": ["src/pages/*"],
       "@/shared/*": ["src/shared/*"],
       "@/adapters/*": ["src/adapters/*"],
       "@/config/*": ["src/config/*"]

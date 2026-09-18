@@ -9,4 +9,3 @@ export interface AppSettings {
 }
 
 export type StoreSettings = AppSettings;
-

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import CartButton from '@/modules/cart/components/CartButton';
+import CartButton from '@/features/cart/CartButton';
 
 describe('CartButton Component', () => {
   it('renders button with shopping bag icon and accessible aria-label', () => {

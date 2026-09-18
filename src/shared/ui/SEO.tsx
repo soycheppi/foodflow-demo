@@ -9,10 +9,6 @@ interface SEOProps {
   schema?: Record<string, unknown>;
 }
 
-/**
- * Native React 19 Document Metadata (Ponytail Minimalism)
- * React 19 automatically hoists <title>, <meta>, <link>, and <script> tags to the document <head>.
- */
 const SEO: React.FC<SEOProps> = ({
   title = `${restaurantConfig.brand.name} | ${restaurantConfig.brand.tagline}`,
   description = restaurantConfig.brand.description,
@@ -55,7 +51,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="theme-color" content={restaurantConfig.brand.primaryColor} />
       {url && <link rel="canonical" href={url} />}
 
-      {/* Open Graph / Facebook */}
+      {}
       <meta property="og:type" content="website" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
@@ -63,13 +59,13 @@ const SEO: React.FC<SEOProps> = ({
       {url && <meta property="og:url" content={url} />}
       <meta property="og:site_name" content={restaurantConfig.brand.name} />
 
-      {/* Twitter */}
+      {}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
 
-      {/* Structured Data (JSON-LD) */}
+      {}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(finalSchema) }}

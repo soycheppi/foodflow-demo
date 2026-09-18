@@ -4,8 +4,8 @@ export interface CartItem extends Product {
   readonly cantidad: number;
 }
 
-export type PaymentMethod = 'cash' | 'transfer';
-export type DeliveryType = 'delivery' | 'takeaway';
+type PaymentMethod = 'cash' | 'transfer';
+type DeliveryType = 'delivery' | 'takeaway';
 
 export interface OrderItemPayload {
   readonly id: string;

@@ -1,6 +1,7 @@
 import { CustomerOrderInfo, OrderItemPayload } from '@/core/types/order';
 import { restaurantConfig } from '@/config/restaurant.config';
 import { t } from '@/config/locales';
+import { formatCurrency } from './pricing';
 
 export interface WhatsAppMessageOptions {
   readonly customerInfo: CustomerOrderInfo;
@@ -10,9 +11,6 @@ export interface WhatsAppMessageOptions {
   readonly currentUid?: string;
 }
 
-/**
- * Builds formatted order message for WhatsApp checkout.
- */
 export const buildWhatsAppOrderMessage = ({
   customerInfo,
   items,
@@ -39,16 +37,13 @@ export const buildWhatsAppOrderMessage = ({
     `*${t.cart.orderDetails}*`,
     itemsText,
     '',
-    `*${t.cart.total}: ${restaurantConfig.business.currencySymbol}${finalTotal.toFixed(2)}*`,
+    `*${t.cart.total}: ${formatCurrency(finalTotal)}*`,
     currentUid ? pointsSection : null,
   ].filter((line) => line !== null);
 
   return msgLines.join('\n');
 };
 
-/**
- * Generates direct WhatsApp URL with pre-filled encoded message.
- */
 export const createWhatsAppUrl = (
   phone: string,
   message: string

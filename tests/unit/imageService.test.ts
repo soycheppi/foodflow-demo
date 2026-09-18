@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toCDNUrl, manejarCargaArchivo, manejarEliminacionArchivo } from '@/adapters/image';
+import { toCDNUrl, uploadImageFile, deleteImageFile } from '@/adapters/image';
 
 describe('ImageService Adapter (Zero-Trust & CDN Optimization)', () => {
   describe('toCDNUrl converter', () => {
@@ -27,21 +27,21 @@ describe('ImageService Adapter (Zero-Trust & CDN Optimization)', () => {
     it('rejects invalid files that are not images', async () => {
       const textFile = new File(['hello text'], 'document.txt', { type: 'text/plain' });
 
-      await expect(manejarCargaArchivo(textFile, 'products')).rejects.toThrow(
+      await expect(uploadImageFile(textFile, 'products')).rejects.toThrow(
         'The file must be a valid image.'
       );
     });
 
     it('rejects file without name or empty file', async () => {
-      await expect(manejarCargaArchivo(null as unknown as File, 'products')).rejects.toThrow();
+      await expect(uploadImageFile(null as unknown as File, 'products')).rejects.toThrow();
     });
   });
 
-  describe('manejarEliminacionArchivo', () => {
+  describe('deleteImageFile', () => {
     it('handles empty or missing url gracefully without throwing', async () => {
       let notified = false;
       await expect(
-        manejarEliminacionArchivo({ url: '' }, () => {
+        deleteImageFile({ url: '' }, () => {
           notified = true;
         })
       ).resolves.toBeUndefined();

@@ -10,8 +10,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@/app': fileURLToPath(new URL('./src/app', import.meta.url)),
       '@/core': fileURLToPath(new URL('./src/core', import.meta.url)),
-      '@/modules': fileURLToPath(new URL('./src/modules', import.meta.url)),
+      '@/entities': fileURLToPath(new URL('./src/entities', import.meta.url)),
+      '@/features': fileURLToPath(new URL('./src/features', import.meta.url)),
+      '@/widgets': fileURLToPath(new URL('./src/widgets', import.meta.url)),
+      '@/pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
       '@/shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
       '@/adapters': fileURLToPath(new URL('./src/adapters', import.meta.url)),
       '@/config': fileURLToPath(new URL('./src/config', import.meta.url)),

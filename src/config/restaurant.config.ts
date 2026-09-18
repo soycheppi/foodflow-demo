@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export interface RestaurantConfig {
   readonly brand: {
     readonly name: string;
@@ -118,3 +120,64 @@ export const restaurantConfig: RestaurantConfig = {
     ],
   },
 };
+
+const RestaurantConfigSchema = z.object({
+  brand: z.object({
+    name: z.string().min(1),
+    tagline: z.string(),
+    description: z.string(),
+    logoUrl: z.string(),
+    faviconUrl: z.string(),
+    ogImageUrl: z.string(),
+    primaryColor: z.string(),
+  }),
+  contact: z.object({
+    whatsappNumber: z.string().min(6),
+    phone: z.string(),
+    email: z.string().email().or(z.literal('')),
+    address: z.object({
+      street: z.string(),
+      city: z.string(),
+      state: z.string(),
+      country: z.string(),
+      postalCode: z.string(),
+    }),
+    social: z.object({
+      instagram: z.string().optional(),
+      facebook: z.string().optional(),
+      twitter: z.string().optional(),
+    }).optional(),
+  }),
+  business: z.object({
+    currencySymbol: z.string(),
+    currencyCode: z.string().min(3),
+    locale: z.string().min(2),
+    deliveryFee: z.number().nonnegative(),
+    minOrderAmount: z.number().nonnegative(),
+    allowPickup: z.boolean(),
+    allowDelivery: z.boolean(),
+    openingHours: z.object({
+      open: z.string(),
+      close: z.string(),
+      days: z.array(z.string()),
+    }),
+  }),
+  orderMessage: z.object({
+    intro: z.string(),
+    includeNotes: z.boolean(),
+  }),
+  about: z.object({
+    title: z.string(),
+    stories: z.array(z.object({
+      id: z.string(),
+      title: z.string(),
+      text: z.string(),
+      image: z.string().optional(),
+      alt: z.string().optional(),
+    })),
+  }).optional(),
+});
+
+if (import.meta.env.DEV) {
+  RestaurantConfigSchema.parse(restaurantConfig);
+}

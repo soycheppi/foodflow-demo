@@ -2,7 +2,12 @@
   "name": "foodflow-demo",
   "private": false,
   "version": "1.0.0",
+  "description": "FoodFlow Demo — Open-Source White-Label Food Ordering & WhatsApp Checkout Starter Kit",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soycheppi/foodflow-demo.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -17,24 +22,28 @@
     "test:a11y": "playwright test a11y",
     "check:circular": "madge --circular src",
     "knip": "knip",
-    "audit": "npm run typecheck && npm run lint && npm run test && npm run check:circular && npm run knip && npm run build",
-    "deploy:rules": "firebase deploy --only firestore:rules,storage:rules",
-    "deploy:hosting": "npm run build && firebase deploy --only hosting",
-    "emulators": "firebase emulators:start --project demo-foodflow"
+    "audit": "npm run typecheck && npm run lint && npm run test && npm run check:circular && npm run build"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@hookform/resolvers": "^5.9.1",
+    "@radix-ui/react-dialog": "^1.1.23",
     "@tanstack/query-sync-storage-persister": "^5.90.22",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-query-persist-client": "^5.90.22",
+    "browser-image-compression": "^2.0.2",
     "firebase": "^11.3.0",
     "lenis": "^1.3.17",
+    "next-themes": "^0.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.88.0",
     "react-router-dom": "^7.2.0",
     "sonner": "^2.0.8",
+    "web-vitals": "^6.2.2",
+    "zod": "^4.6.5",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
@@ -67,10 +76,5 @@
     "vite": "^6.2.0",
     "vite-plugin-pwa": "^1.2.0",
     "vitest": "^5.0.1"
-  },
-  "description": "FoodFlow Demo — Open-Source White-Label Food Ordering & WhatsApp Checkout",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/soycheppi/foodflow-demo.git"
   }
 }

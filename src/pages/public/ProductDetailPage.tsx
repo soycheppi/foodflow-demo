@@ -2,58 +2,16 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { useProduct, useCategories } from '@/modules/catalog/hooks/catalogHooks';
-import { useCart } from '@/modules/cart/context/CartProvider';
+import { useProduct, useCategories } from '@/features/catalog-filters/catalogHooks';
+import { useCart } from '@/features/cart/useCartStore';
 import AppImage from '@/shared/ui/AppImage';
 import SEO from '@/shared/ui/SEO';
 import Spinner from '@/shared/ui/Spinner';
-import { IconArrowLeft, IconPlus } from '@/shared/icons/ActionIcons';
+import { IconArrowLeft } from '@/shared/icons/ActionIcons';
+import MayReservation from '@/entities/product/MayReservation';
+import ProductActionsBar from '@/entities/product/ProductActionsBar';
 import { t } from '@/config/locales';
 import { restaurantConfig } from '@/config/restaurant.config';
-
-// Custom Minus icon to maintain consistency with project icons
-const IconMinus: React.FC<React.SVGProps<SVGSVGElement> & { size?: number | string }> = ({
-  size = 24,
-  ...props
-}) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
-);
-
-// Custom Share icon (Share nodes)
-const IconShare: React.FC<React.SVGProps<SVGSVGElement> & { size?: number | string }> = ({
-  size = 24,
-  ...props
-}) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <circle cx="18" cy="5" r="3" />
-    <circle cx="6" cy="12" r="3" />
-    <circle cx="18" cy="19" r="3" />
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-  </svg>
-);
 
 export default function PublicProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -122,8 +80,8 @@ export default function PublicProductDetail() {
 
   if (loadingProduct || loadingCategories) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 dark:bg-[#1a1c21]">
-        <Spinner label={t.common.loading} />
+      <div className="min-h-[60vh] flex items-center justify-center bg-gray-50 dark:bg-[#1a1c21]">
+        <Spinner variant="inline" label={t.common.loading} />
       </div>
     );
   }
@@ -178,7 +136,7 @@ export default function PublicProductDetail() {
       />
 
       <div className="container mx-auto max-w-6xl">
-        {/* BACK BUTTON */}
+        {}
         <Link
           to={categoryUrl}
           className="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-brand-red dark:hover:text-brand-red mb-8 transition-colors font-bold gap-2 animate-fade-in-up"
@@ -186,10 +144,10 @@ export default function PublicProductDetail() {
           <IconArrowLeft size={14} /> {t.common.back} to {categoryName}
         </Link>
 
-        {/* MAIN CONTAINER */}
+        {}
         <div className="bg-white dark:bg-brand-black rounded-4xl border border-gray-100 dark:border-white/5 shadow-2xl overflow-hidden p-6 md:p-12 animate-fade-in-up delay-100">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
-            {/* LEFT COLUMN: IMAGE */}
+            {}
             <div className="lg:col-span-6">
               <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-white/5 aspect-3/2 bg-gray-100 dark:bg-[#2d3038] relative">
                 <AppImage
@@ -209,10 +167,10 @@ export default function PublicProductDetail() {
               </div>
             </div>
 
-            {/* RIGHT COLUMN: DETAILS & ACTIONS */}
+            {}
             <div className="lg:col-span-6 flex flex-col justify-between">
               <div>
-                {/* Category Badge */}
+                {}
                 <div className="flex items-center gap-3 mb-4">
                   <span className="inline-block bg-brand-red/10 dark:bg-brand-red/20 text-brand-red dark:text-red-400 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full">
                     {categoryName}
@@ -233,12 +191,12 @@ export default function PublicProductDetail() {
                   )}
                 </div>
 
-                {/* Name */}
+                {}
                 <h1 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight font-questrial tracking-tight mb-6">
                   {product.nombre}
                 </h1>
 
-                {/* Price */}
+                {}
                 <div className="mb-6">
                   <span className="block text-[10px] text-gray-600 dark:text-gray-400 uppercase tracking-widest font-bold mb-1">
                     {t.catalog.price}
@@ -248,69 +206,25 @@ export default function PublicProductDetail() {
                   </span>
                 </div>
 
-                {/* Description */}
+                {}
                 <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-400 leading-relaxed font-medium mb-8 text-base md:text-lg border-t border-gray-100 dark:border-white/5 pt-6">
                   {product.descripcion || 'No description available for this item.'}
                 </div>
               </div>
 
-              {/* Special reservation */}
-              
+              {}
+              <MayReservation product={product} />
 
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-auto pt-6 border-t border-gray-100 dark:border-white/5">
-                {!isOutOfStock ? (
-                  <>
-                    {/* Quantity selector */}
-                    <div className="flex items-center justify-between bg-gray-100 dark:bg-[#2d3038] rounded-2xl p-1.5 min-w-35 border border-gray-200/50 dark:border-white/5">
-                      <button
-                        onClick={decrement}
-                        disabled={quantity <= 1}
-                        className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-white dark:hover:bg-[#1a1c21] text-gray-500 hover:text-brand-red disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-gray-500 transition-all active:scale-90"
-                        aria-label={t.common.decreaseQuantity}
-                      >
-                        <IconMinus size={18} />
-                      </button>
-                      <span className="text-lg font-black text-gray-900 dark:text-white font-questrial min-w-8 text-center">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={increment}
-                        disabled={quantity >= product.stock}
-                        className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-white dark:hover:bg-[#1a1c21] text-gray-500 hover:text-brand-red disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-gray-500 transition-all active:scale-90"
-                        aria-label={t.common.increaseQuantity}
-                      >
-                        <IconPlus size={18} />
-                      </button>
-                    </div>
-
-                    {/* Add to Cart */}
-                    <button
-                      onClick={handleAddToCart}
-                      className="flex-1 bg-brand-red text-white hover:bg-brand-red/90 px-8 py-4 rounded-2xl font-black uppercase tracking-widest flex items-center justify-center gap-3 transition-all duration-300 active:scale-95 shadow-lg shadow-brand-red/20 text-sm"
-                    >
-                      <IconPlus size={18} strokeWidth="3" />
-                      {t.catalog.addToCart}
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    disabled
-                    className="flex-1 bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-600 py-4 rounded-2xl font-black uppercase tracking-widest flex items-center justify-center gap-3 cursor-not-allowed text-sm"
-                  >
-                    {t.common.outOfStock}
-                  </button>
-                )}
-
-                {/* Share */}
-                <button
-                  onClick={handleShare}
-                  className="bg-gray-100 dark:bg-[#2d3038] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 px-5 py-4 rounded-2xl transition-all duration-300 active:scale-95 flex items-center justify-center border border-gray-200/50 dark:border-white/5"
-                  title={t.common.shareItem}
-                >
-                  <IconShare size={18} />
-                </button>
-              </div>
+              {}
+              <ProductActionsBar
+                isOutOfStock={isOutOfStock}
+                quantity={quantity}
+                stock={product.stock}
+                onIncrement={increment}
+                onDecrement={decrement}
+                onAddToCart={handleAddToCart}
+                onShare={handleShare}
+              />
             </div>
           </div>
         </div>

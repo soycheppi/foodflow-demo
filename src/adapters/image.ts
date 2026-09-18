@@ -1,76 +1,30 @@
 import type { StorageReference } from 'firebase/storage';
 
-/**
- * Native Canvas WebP Image Resizer (Zero-Dependency Ponytail Minimalism)
- */
-export const resizeImageToWebP = (
+import imageCompression from 'browser-image-compression';
+
+export const resizeImageToWebP = async (
   file: File,
   maxWidth = 320,
   maxHeight?: number
 ): Promise<File> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        let { width, height } = img;
-        const targetHeight = maxHeight || maxWidth;
+  const options = {
+    maxWidthOrHeight: maxHeight ? Math.max(maxWidth, maxHeight) : maxWidth,
+    useWebWorker: true,
+    fileType: 'image/webp',
+    initialQuality: 0.85,
+  };
 
-        if (width > height) {
-          if (width > maxWidth) {
-            height = Math.round((height * maxWidth) / width);
-            width = maxWidth;
-          }
-        } else {
-          if (height > targetHeight) {
-            width = Math.round((width * targetHeight) / height);
-            height = targetHeight;
-          }
-        }
+  try {
+    const compressedBlob = await imageCompression(file, options);
+    const fileName = `${file.name.replace(/\.[^/.]+$/, '')}.webp`;
+    return new File([compressedBlob], fileName, { type: 'image/webp' });
+  } catch {
 
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          reject(new Error('Failed to obtain canvas 2D context'));
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0, width, height);
-
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              const fileName = `${file.name.replace(/\.[^/.]+$/, '')}.webp`;
-              const convertedFile = new File([blob], fileName, { type: 'image/webp' });
-              resolve(convertedFile);
-            } else {
-              reject(new Error('Canvas WebP blob creation failed'));
-            }
-          },
-          'image/webp',
-          0.85
-        );
-      };
-
-      img.onerror = () => reject(new Error('Failed to load image for resizing'));
-      img.src = e.target?.result as string;
-    };
-
-    reader.onerror = () => reject(new Error('Failed to read image file'));
-    reader.readAsDataURL(file);
-  });
+    return file;
+  }
 };
 
-/**
- * Uploads a file with progress tracking.
- */
-/**
- * Uploads a file with progress tracking.
- */
-export const uploadFileWithProgress = async (
+const uploadFileWithProgress = async (
   storageRef: StorageReference,
   file: Blob | Uint8Array | ArrayBuffer,
   onProgress?: (progress: number) => void
@@ -99,11 +53,19 @@ export const uploadFileWithProgress = async (
   });
 };
 
-export const subirArchivoConProgreso = uploadFileWithProgress;
+function extractStoragePath(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    if (parsed.pathname.includes('/o/')) {
+      const encoded = parsed.pathname.split('/o/')[1];
+      return decodeURIComponent(encoded);
+    }
+    return parsed.pathname.replace(/^\/+/, '');
+  } catch {
+    return null;
+  }
+}
 
-/**
- * Handles single image upload, replacing previous version if it exists.
- */
 export const uploadImageFile = async (
   file: File,
   folder: string,
@@ -115,13 +77,15 @@ export const uploadImageFile = async (
   }
 
   const { ref, deleteObject } = await import('firebase/storage');
-  const getStorageInstance = async () => ({}) as any;
+  const { getStorageInstance } = await import('@/adapters/firebase/providers/storage');
   const storageInstance = await getStorageInstance();
 
   if (oldFile?.url) {
     try {
-      const path = decodeURIComponent(oldFile.url.split('/o/')[1].split('?')[0]);
-      await deleteObject(ref(storageInstance, path));
+      const path = extractStoragePath(oldFile.url);
+      if (path) {
+        await deleteObject(ref(storageInstance, path));
+      }
     } catch (e) {
       console.warn('Could not delete old file', e);
     }
@@ -133,11 +97,6 @@ export const uploadImageFile = async (
   return await uploadFileWithProgress(storageRef, resized, onProgress);
 };
 
-export const manejarCargaArchivo = uploadImageFile;
-
-/**
- * Deletes an image from Storage.
- */
 export const deleteImageFile = async (
   fileObject: { url?: string },
   notifyDeleted?: (msg: string) => void
@@ -146,20 +105,20 @@ export const deleteImageFile = async (
     if (!fileObject?.url) return;
 
     const { ref, deleteObject } = await import('firebase/storage');
-    const getStorageInstance = async () => ({}) as any;
+    const { getStorageInstance } = await import('@/adapters/firebase/providers/storage');
     const storage = await getStorageInstance();
 
-    const path = decodeURIComponent(fileObject.url.split('/o/')[1].split('?')[0]);
-    await deleteObject(ref(storage, path));
-    notifyDeleted?.('Image deleted successfully.');
+    const path = extractStoragePath(fileObject.url);
+    if (path) {
+      await deleteObject(ref(storage, path));
+      notifyDeleted?.('Image deleted successfully.');
+    }
   } catch (error: unknown) {
     const errorMsg = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error deleting image:', error);
     notifyDeleted?.(`Error deleting image: ${errorMsg}`);
   }
 };
-
-export const manejarEliminacionArchivo = deleteImageFile;
 
 const CDN_BASE = import.meta.env.VITE_CDN_URL || '';
 const BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '';

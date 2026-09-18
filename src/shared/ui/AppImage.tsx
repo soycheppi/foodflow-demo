@@ -12,7 +12,7 @@ interface AppImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   children?: React.ReactNode;
 }
 
-const PLACEHOLDER_URL = placeholderImg; // Default central placeholder
+const PLACEHOLDER_URL = placeholderImg;
 
 const AppImage: React.FC<AppImageProps> = memo(({
   src,

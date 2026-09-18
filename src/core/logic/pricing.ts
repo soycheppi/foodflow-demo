@@ -1,5 +1,13 @@
 import { CartItem, OrderCalculationSummary } from '@/core/types/order';
 import { StoreSettings } from '@/core/types/settings';
+import { restaurantConfig } from '@/config/restaurant.config';
+
+export const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat(restaurantConfig.business.locale, {
+    style: 'currency',
+    currency: restaurantConfig.business.currencyCode,
+  }).format(amount);
+};
 
 export interface PricingOptions {
   readonly items: readonly CartItem[];
@@ -9,9 +17,6 @@ export interface PricingOptions {
   readonly isRegisteredCustomer: boolean;
 }
 
-/**
- * Evaluates whether a registered user is eligible for a loyalty discount on their next order.
- */
 export const checkLoyaltyDiscountEligibility = (
   rewardCycle: number = 0,
   settings: StoreSettings | null | undefined
@@ -27,9 +32,6 @@ export const checkLoyaltyDiscountEligibility = (
   return false;
 };
 
-/**
- * Returns raw discount amount based on customer's current points cycle.
- */
 export const getLoyaltyDiscountAmount = (
   rewardCycle: number = 0,
   settings: StoreSettings | null | undefined
@@ -45,9 +47,10 @@ export const getLoyaltyDiscountAmount = (
   return 0;
 };
 
-/**
- * Pure calculation engine for order pricing: subtotal, discounts, shipping, and final total.
- */
+export const calculateSubtotal = (items: readonly CartItem[]): number => {
+  return items.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+};
+
 export const calculateOrderSummary = ({
   items,
   deliveryType,
@@ -55,7 +58,7 @@ export const calculateOrderSummary = ({
   rewardCycle = 0,
   isRegisteredCustomer,
 }: PricingOptions): OrderCalculationSummary => {
-  const subtotal = items.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+  const subtotal = calculateSubtotal(items);
   const deliveryFeeConfig = Number(settings?.costoEnvio || 0);
   const deliveryFee = deliveryType === 'delivery' ? deliveryFeeConfig : 0;
 

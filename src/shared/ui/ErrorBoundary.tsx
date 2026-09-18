@@ -11,15 +11,11 @@ interface State {
   isChunkError: boolean;
 }
 
-/**
- * ErrorBoundary: catches runtime errors in lazy-loaded chunks and other React subtrees.
- * Displays a friendly recovery UI instead of a blank/crashed screen.
- */
 class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, isChunkError: false };
 
   static getDerivedStateFromError(error: Error): State {
-    // Detect network/chunk load failures distinctly
+
     const isChunkError =
       error.name === 'ChunkLoadError' ||
       error.message.includes('Failed to fetch dynamically imported module') ||

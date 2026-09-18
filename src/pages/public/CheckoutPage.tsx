@@ -4,7 +4,7 @@ import SEO from '@/shared/ui/SEO';
 import { t } from '@/config/locales';
 import { restaurantConfig } from '@/config/restaurant.config';
 
-const CheckoutOrder = lazy(() => import('@/modules/cart/components/CheckoutOrder'));
+const CheckoutOrder = lazy(() => import('@/features/checkout/CheckoutOrder'));
 
 export default function CheckoutPage() {
   return (
@@ -13,7 +13,7 @@ export default function CheckoutPage() {
         title={`${t.cart.checkout} | ${restaurantConfig.brand.name}`}
         description={`${t.cart.checkout} - ${restaurantConfig.brand.name}`}
       />
-      <Suspense fallback={<Spinner label={t.common.loading} />}>
+      <Suspense fallback={<Spinner variant="inline" label={t.common.loading} />}>
         <CheckoutOrder />
       </Suspense>
     </div>
